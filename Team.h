@@ -2,21 +2,11 @@
 
 #include <string>
 
-class Team
-{
-public:
-	static const Team PLAYER;
-	static const Team ENEMY;
-
-	bool is_player();
-	bool is_enemy();
-	bool is_hostile_to(Team o);
-	bool is_friendly_to(Team o);
-	std::string to_string();
-
-private:
-	int key;
-
-	Team(int k);
+enum Team {
+	PLAYER = 20,
+	ENEMY = 40,
 };
 
+bool are_hostile(Team t1, Team t2);
+bool are_friendly(Team t1, Team t2);
+std::string to_string(Team t);

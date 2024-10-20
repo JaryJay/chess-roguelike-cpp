@@ -1,37 +1,26 @@
 #include "Team.h"
+#include <stdexcept>
 
-const int PLAYER_KEY = 15;
-const int ENEMY_KEY = 20;
-
-const Team Team::PLAYER(PLAYER_KEY);
-const Team Team::ENEMY(ENEMY_KEY);
-
-bool Team::is_player()
+bool are_hostile(Team t1, Team t2)
 {
-	return key == PLAYER_KEY;
+	return t1 != t2;
 }
 
-bool Team::is_enemy()
+bool are_friendly(Team t1, Team t2)
 {
-	return key == ENEMY_KEY;
+	return t1 == t2;
 }
 
-bool Team::is_hostile_to(Team o)
+std::string to_string(Team t)
 {
-	return key != o.key;
+	switch (t)
+	{
+	case PLAYER:
+		return "Player";
+	case ENEMY:
+		return "Enemy";
+	default:
+		throw std::logic_error("Unexpected team: " + t);
+	}
 }
 
-bool Team::is_friendly_to(Team o)
-{
-	return key == o.key;
-}
-
-std::string Team::to_string()
-{
-	return is_player() ? "Player" : "Enemey";
-}
-
-Team::Team(int k)
-{
-	key = k;
-}

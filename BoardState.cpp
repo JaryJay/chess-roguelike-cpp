@@ -1,51 +1,55 @@
 #include "BoardState.h"
 
-bool BoardState::is_end_state()
+bool BoardState::is_end_state() const
 {
 	return false;
 }
 
-BoardState BoardState::simulate_move(const Move& move)
+std::unique_ptr<BoardState> BoardState::simulate_move(const Move& move) const
 {
-	return BoardState();
+	return std::make_unique<BoardState>();
 }
 
-std::vector<Move> BoardState::get_legal_moves()
+std::vector<Move> BoardState::get_legal_moves() const
 {
 	return std::vector<Move>();
 }
 
-bool BoardState::is_king_alive(const Team& team)
+bool BoardState::is_king_alive(Team team) const
 {
 	return false;
 }
 
-bool BoardState::is_king_in_check(const Team& team)
+bool BoardState::is_king_in_check(Team team) const
 {
 	return false;
 }
 
-BoardState BoardState::duplicate()
+std::unique_ptr<BoardState> BoardState::duplicate() const
 {
-	return BoardState();
+	return std::make_unique<BoardState>();
 }
 
-bool BoardState::has_tile(const Vector2i& pos)
-{
-	return false;
-}
-
-bool BoardState::has_piece(const Vector2i& pos)
+bool BoardState::has_tile(const Vector2i& pos) const
 {
 	return false;
 }
 
-PieceState& BoardState::get_piece(const Vector2i& pos)
+bool BoardState::has_piece(const Vector2i& pos) const
+{
+	return false;
+}
+
+std::unique_ptr<Piece> BoardState::get_piece(const Vector2i& pos) const
 {
 	return NULL;
 }
 
-BoardState::BoardState() : tiles(), current_turn(&Team::PLAYER)
+BoardState::BoardState() : tiles(), current_turn(PLAYER)
+{
+}
+
+BoardState::BoardState(Team team) : tiles(), current_turn(team)
 {
 }
 
