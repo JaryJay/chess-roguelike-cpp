@@ -1,28 +1,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include "vao.h"
-
-const char* vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"layout (location = 1) in vec2 aTexCoord;\n"
-"layout (location = 2) in vec2 aOffset;\n"
-"out vec2 TexCoord;\n"
-"void main()\n"
-"{\n"
-"   TexCoord = aTexCoord;\n"
-"   vec3 pos = aPos + vec3(aOffset, 0.0);\n"
-"   gl_Position = vec4(pos, 1.0);\n"
-"}\0";
-
-const char* fragmentShaderSource = "#version 330 core\n"
-"in vec2 TexCoord;\n"
-"out vec4 FragColor;\n"
-"uniform sampler2D spriteSheet;\n"
-"void main()\n"
-"{\n"
-"   FragColor = texture(spriteSheet, TexCoord);\n"
-"}\0";
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -33,6 +14,14 @@ void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+}
+
+std::string readShaderSource(const std::string& filePath)
+{
+	std::ifstream shaderFile(filePath);
+	std::stringstream shaderStream;
+	shaderStream << shaderFile.rdbuf();
+	return shaderStream.str();
 }
 
 int main() {
@@ -63,12 +52,18 @@ int main() {
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	// Build and compile shaders
+	std::string vertexShaderSource = readShaderSource("shaders/vertex_shader.glsl");
+	std::string fragmentShaderSource = readShaderSource("shaders/fragment_shader.glsl");
+
+	const char* vertexShaderCode = vertexShaderSource.c_str();
+	const char* fragmentShaderCode = fragmentShaderSource.c_str();
+
 	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+	glShaderSource(vertexShader, 1, &vertexShaderCode, NULL);
 	glCompileShader(vertexShader);
 
 	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+	glShaderSource(fragmentShader, 1, &fragmentShaderCode, NULL);
 	glCompileShader(fragmentShader);
 
 	unsigned int shaderProgram = glCreateProgram();
