@@ -108,6 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Jay\Documents\GitHub\opengl-cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,19 +134,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BoardState.cpp" />
-    <ClCompile Include="glad.c" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Piece.cpp" />
-    <ClCompile Include="Team.cpp" />
+    <ClCompile Include="src\BoardState.cpp" />
+    <ClCompile Include="src\math\Vector2.h" />
+    <ClCompile Include="third_party\glad.c" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Piece.cpp" />
+    <ClCompile Include="src\Team.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BoardState.h" />
-    <ClInclude Include="Move.h" />
-    <ClInclude Include="Piece.h" />
-    <ClInclude Include="PieceType.h" />
-    <ClInclude Include="Team.h" />
-    <ClInclude Include="Vector2i.h" />
+    <ClInclude Include="src\BoardState.h" />
+    <ClInclude Include="src\Move.h" />
+    <ClInclude Include="src\Piece.h" />
+    <ClInclude Include="src\PieceType.h" />
+    <ClInclude Include="third_party\stb_image.h" />
+    <ClInclude Include="src\Team.h" />
+    <ClInclude Include="src\math\Vector2i.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\chess-roguelike\assets\pieces_sprite_sheet.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

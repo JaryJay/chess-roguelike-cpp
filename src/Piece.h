@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vector2i.h"
+#include "src/math/Vector2i.h"
 #include "PieceType.h"
 #include "BoardState.h"
 #include "Team.h"
