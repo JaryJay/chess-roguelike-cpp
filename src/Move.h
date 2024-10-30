@@ -1,5 +1,5 @@
 #pragma once
-#include "src/math/Vector2i.h"
+#include <glm/vec2.hpp>
 
 typedef unsigned __int8 MoveFlags;
 
@@ -16,10 +16,10 @@ enum {
 
 struct Move {
 	int piece_id;
-	Vector2i from;
-	Vector2i to;
+	glm::ivec2 from;
+	glm::ivec2 to;
 	MoveFlags flags;
 
-	Move(int piece_id, Vector2i from, Vector2i to, MoveFlags flags = 0) :
+	Move(const int piece_id, const glm::ivec2 from, const glm::ivec2 to, const MoveFlags flags = 0) :
 		piece_id(piece_id), from(from), to(to), flags(flags) {}
 };

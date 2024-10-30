@@ -1,5 +1,7 @@
 #include "BoardState.h"
 
+#include <glm/vec2.hpp>
+
 bool BoardState::is_end_state() const
 {
 	return false;
@@ -30,29 +32,27 @@ std::unique_ptr<BoardState> BoardState::duplicate() const
 	return std::make_unique<BoardState>();
 }
 
-bool BoardState::has_tile(const Vector2i& pos) const
+bool BoardState::has_tile(const glm::ivec2& pos) const
 {
 	return false;
 }
 
-bool BoardState::has_piece(const Vector2i& pos) const
+bool BoardState::has_piece(const glm::ivec2& pos) const
 {
 	return false;
 }
 
-std::unique_ptr<Piece> BoardState::get_piece(const Vector2i& pos) const
+std::unique_ptr<Piece> BoardState::get_piece(const glm::ivec2& pos) const
 {
-	return NULL;
+	return nullptr;
 }
 
-BoardState::BoardState() : tiles(), current_turn(PLAYER)
-{
-}
-
-BoardState::BoardState(Team team) : tiles(), current_turn(team)
+BoardState::BoardState() : current_turn(PLAYER)
 {
 }
 
-BoardState::~BoardState()
+BoardState::BoardState(const Team team) : current_turn(team)
 {
 }
+
+BoardState::~BoardState() = default;

@@ -1,17 +1,17 @@
 #include "Team.h"
 #include <stdexcept>
 
-bool are_hostile(Team t1, Team t2)
+bool are_hostile(const Team t1, const Team t2)
 {
 	return t1 != t2;
 }
 
-bool are_friendly(Team t1, Team t2)
+bool are_friendly(const Team t1, const Team t2)
 {
 	return t1 == t2;
 }
 
-std::string to_string(Team t)
+std::string to_string(const Team t)
 {
 	switch (t)
 	{

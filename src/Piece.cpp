@@ -1,9 +1,10 @@
 #include "Piece.h"
 #include "PieceType.h"
+#include "BoardState.h"
 #include <stdexcept>
 #include <cassert>
 
-std::vector<Move> Piece::get_available_moves(BoardState& b) const
+std::vector<Move> Piece::get_available_moves(const BoardState& b) const
 {
 	switch (type())
 	{
@@ -40,15 +41,17 @@ float Piece::get_worth() const
 		return 3;
 	case PAWN:
 		return 1;
+	default:
+		throw std::logic_error("Unexpected type: " + type());
 	}
 }
 
 Piece Piece::duplicate() const
 {
-	return Piece(id(), pos(), type(), team());
+	return {id(), pos(), type(), team()};
 }
 
-bool Piece::equals(Piece& o) const
+bool Piece::equals(const Piece& o) const
 {
 	return id() == o.id() && pos() == o.pos() && type() == o.type() && team() == o.team();
 }
@@ -58,7 +61,7 @@ int Piece::id() const
 	return _id;
 }
 
-Vector2i Piece::pos() const
+glm::ivec2 Piece::pos() const
 {
 	return _pos;
 }
@@ -81,34 +84,34 @@ int Piece::generate_id()
 
 // The following functions are all implementations for getting available moves.
 
-const std::vector<Vector2i> FOUR_DIRECTIONS = {
-	Vector2i(1, 0),
-	Vector2i(0, 1),
-	Vector2i(-1, 0),
-	Vector2i(0, -1),
+const std::vector<glm::ivec2> FOUR_DIRECTIONS = {
+	glm::ivec2(1, 0),
+	glm::ivec2(0, 1),
+	glm::ivec2(-1, 0),
+	glm::ivec2(0, -1),
 };
-const std::vector<Vector2i> DIAGONAL_DIRECTIONS = {
-	Vector2i(1, 1),
-	Vector2i(-1, 1),
-	Vector2i(-1, -1),
-	Vector2i(1, -1),
+const std::vector<glm::ivec2> DIAGONAL_DIRECTIONS = {
+	glm::ivec2(1, 1),
+	glm::ivec2(-1, 1),
+	glm::ivec2(-1, -1),
+	glm::ivec2(1, -1),
 };
-const std::vector<Vector2i> EIGHT_DIRECTIONS = {
-	Vector2i(1, 0),
-	Vector2i(1, 1),
-	Vector2i(0, 1),
-	Vector2i(-1, 1),
-	Vector2i(-1, 0),
-	Vector2i(-1, -1),
-	Vector2i(0, -1),
-	Vector2i(1, -1),
+const std::vector<glm::ivec2> EIGHT_DIRECTIONS = {
+	glm::ivec2(1, 0),
+	glm::ivec2(1, 1),
+	glm::ivec2(0, 1),
+	glm::ivec2(-1, 1),
+	glm::ivec2(-1, 0),
+	glm::ivec2(-1, -1),
+	glm::ivec2(0, -1),
+	glm::ivec2(1, -1),
 };
-std::vector<Move> Piece::king_get_available_squares(BoardState& b) const
+std::vector<Move> Piece::king_get_available_squares(const BoardState& b) const
 {
-	assert(type() == KING, "Must be correct type");
+	assert(type() == KING && "Must be correct type");
 	std::vector<Move> moves;
 
-	for (Vector2i dir : EIGHT_DIRECTIONS)
+	for (glm::ivec2 dir : EIGHT_DIRECTIONS)
 	{
 		auto dest = pos() + dir;
 		if (!b.has_tile(dest)) continue;
@@ -126,12 +129,12 @@ std::vector<Move> Piece::king_get_available_squares(BoardState& b) const
 	return moves;
 }
 
-std::vector<Move> Piece::queen_get_available_squares(BoardState& b) const
+std::vector<Move> Piece::queen_get_available_squares(const BoardState& b) const
 {
-	assert(type() == QUEEN, "Must be correct type");
+	assert(type() == QUEEN && "Must be correct type");
 	std::vector<Move> moves;
 
-	for (Vector2i dir : EIGHT_DIRECTIONS)
+	for (glm::ivec2 dir : EIGHT_DIRECTIONS)
 	{
 		auto dest = pos() + dir;
 		for (int i = 0; i < 16; ++i)
@@ -152,12 +155,12 @@ std::vector<Move> Piece::queen_get_available_squares(BoardState& b) const
 	return moves;
 }
 
-std::vector<Move> Piece::rook_get_available_squares(BoardState& b) const
+std::vector<Move> Piece::rook_get_available_squares(const BoardState& b) const
 {
-	assert(type() == ROOK, "Must be correct type");
+	assert(type() == ROOK && "Must be correct type");
 	std::vector<Move> moves;
 
-	for (Vector2i dir : FOUR_DIRECTIONS)
+	for (glm::ivec2 dir : FOUR_DIRECTIONS)
 	{
 		auto dest = pos() + dir;
 		for (int i = 0; i < 16; ++i)
@@ -178,12 +181,12 @@ std::vector<Move> Piece::rook_get_available_squares(BoardState& b) const
 	return moves;
 }
 
-std::vector<Move> Piece::bishop_get_available_squares(BoardState& b) const
+std::vector<Move> Piece::bishop_get_available_squares(const BoardState& b) const
 {
-	assert(type() == BISHOP, "Must be correct type");
+	assert(type() == BISHOP && "Must be correct type");
 	std::vector<Move> moves;
 
-	for (Vector2i dir : DIAGONAL_DIRECTIONS)
+	for (glm::ivec2 dir : DIAGONAL_DIRECTIONS)
 	{
 		auto dest = pos() + dir;
 		for (int i = 0; i < 16; ++i)
@@ -204,22 +207,22 @@ std::vector<Move> Piece::bishop_get_available_squares(BoardState& b) const
 	return moves;
 }
 
-const std::vector<Vector2i> KNIGHT_DIRECTIONS = {
-	Vector2i(2, 1),
-	Vector2i(1, 2),
-	Vector2i(-1, 2),
-	Vector2i(-2, 1),
-	Vector2i(-2, -1),
-	Vector2i(-1, -2),
-	Vector2i(1, -2),
-	Vector2i(2, -1),
+const std::vector<glm::ivec2> KNIGHT_DIRECTIONS = {
+	glm::ivec2(2, 1),
+	glm::ivec2(1, 2),
+	glm::ivec2(-1, 2),
+	glm::ivec2(-2, 1),
+	glm::ivec2(-2, -1),
+	glm::ivec2(-1, -2),
+	glm::ivec2(1, -2),
+	glm::ivec2(2, -1),
 };
-std::vector<Move> Piece::knight_get_available_squares(BoardState& b) const
+std::vector<Move> Piece::knight_get_available_squares(const BoardState& b) const
 {
-	assert(type() == KNIGHT, "Must be correct type");
+	assert(type() == KNIGHT && "Must be correct type");
 	std::vector<Move> moves;
 
-	for (Vector2i dir : KNIGHT_DIRECTIONS)
+	for (glm::ivec2 dir : KNIGHT_DIRECTIONS)
 	{
 		auto dest = pos() + dir;
 		if (!b.has_tile(dest)) continue;
@@ -235,13 +238,13 @@ std::vector<Move> Piece::knight_get_available_squares(BoardState& b) const
 	return moves;
 }
 
-std::vector<Move> Piece::pawn_get_available_squares(BoardState& b) const
+std::vector<Move> Piece::pawn_get_available_squares(const BoardState& b) const
 {
-	assert(type() == PAWN, "Must be correct type");
+	assert(type() == PAWN && "Must be correct type");
 
-	Vector2i forward = team() == PLAYER ? Vector2i(0, -1) : Vector2i(0, 1);
+	glm::ivec2 forward = team() == PLAYER ? glm::ivec2(0, -1) : glm::ivec2(0, 1);
 	
-	auto capture_directions = { forward + Vector2i(-1, 0), forward + Vector2i(1, 0)	};
+	auto capture_directions = { forward + glm::ivec2(-1, 0), forward + glm::ivec2(1, 0)	};
 
 	std::vector<Move> moves;
 	// Tile in front
@@ -264,7 +267,7 @@ std::vector<Move> Piece::pawn_get_available_squares(BoardState& b) const
 	}
 
 	// Captures to the diagonal forward directions
-	for (Vector2i capture_dir : capture_directions) {
+	for (glm::ivec2 capture_dir : capture_directions) {
 		auto dest = pos() + capture_dir;
 		if (!b.has_tile(dest) || !b.has_piece(dest) || !are_hostile(team(), b.get_piece(dest)->team()))
 			continue;
