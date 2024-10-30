@@ -16,7 +16,18 @@ find_package(OpenGL REQUIRED COMPONENTS OpenGL)
 # Add the engine submodule
 add_subdirectory(external/opengl-cpp-engine)
 
-add_executable(chess_roguelike_cpp main.cpp)
+add_executable(chess_roguelike_cpp
+        src/BoardState.cpp
+        src/BoardState.h
+        src/main.cpp
+        src/Move.h
+        src/Piece.cpp
+        src/Piece.h
+        src/PieceType.h
+        src/Team.cpp
+        src/Team.h
+        src/Game.cpp
+        src/Game.h)
 
 # Copy the shaders to the build directory
 add_custom_command(
