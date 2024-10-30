@@ -1,0 +1,9 @@
+{
+  "name" : "chess-roguelike-cpp",
+  "version-string" : "1.0.0",
+  "builtin-baseline" : "41626fd77bf42f29e8f7e43dc1f2f05780588cde",
+  "dependencies" : [ "glfw3", "glm", "opengl", "stb", {
+    "name" : "glad",
+    "version>=" : "0.1.36"
+  } ]
+}
