@@ -1,6 +1,43 @@
 cmake_minimum_required(VERSION 3.29)
-project(chess_roguelike_cpp)
 
+string(REPLACE "\\" "/" VCPKG_ROOT "$ENV{VCPKG_ROOT}")
+
+# Set the vcpkg toolchain file and C++ standard
+set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
 set(CMAKE_CXX_STANDARD 20)
 
+project(chess_roguelike_cpp)
+
+find_package(glad CONFIG REQUIRED)
+find_package(glfw3 CONFIG REQUIRED)
+find_package(glm CONFIG REQUIRED)
+find_package(OpenGL REQUIRED COMPONENTS OpenGL)
+
+# Add the engine submodule
+add_subdirectory(external/opengl-cpp-engine)
+
 add_executable(chess_roguelike_cpp main.cpp)
+
+# Copy the shaders to the build directory
+add_custom_command(
+        TARGET chess_roguelike_cpp POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/external/opengl-cpp-engine/shaders
+        ${CMAKE_CURRENT_BINARY_DIR}/shaders)
+
+# Copy the assets to the build directory
+add_custom_command(
+        TARGET chess_roguelike_cpp POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/src/assets
+        ${CMAKE_CURRENT_BINARY_DIR}/assets)
+
+
+# Link the engine library to the main app executable
+target_link_libraries(chess_roguelike_cpp
+        PRIVATE opengl-cpp-engine
+        PRIVATE glad::glad
+        PRIVATE glfw
+        PRIVATE glm::glm-header-only
+        PRIVATE OpenGL::GL)
+
