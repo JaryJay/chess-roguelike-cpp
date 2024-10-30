@@ -33,8 +33,8 @@ int main()
     }
 
     glViewport(0, 0, windowWidth, windowHeight);
-    glEnable(GL_BLEND); 
-    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Create texture shader
     const ShaderProgram shaderProgram("shaders/textureVertexShader.glsl", "shaders/textureFragmentShader.glsl");
@@ -57,7 +57,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         renderer.drawTextureRegion(whitePawn, glm::vec2(200, 200), 5.0f);
-        // renderer.drawTextureRegion(all, glm::vec2(400, 500), 1);
+        renderer.drawTextureRegion(all, glm::vec2(400, 500), 5);
 
         // Check and call events and swap buffers
         window.swapBuffers();
