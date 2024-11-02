@@ -114,11 +114,11 @@ std::vector<Move> Piece::king_get_available_squares(const BoardState& b) const
 	for (glm::ivec2 dir : EIGHT_DIRECTIONS)
 	{
 		auto dest = pos() + dir;
-		if (!b.has_tile(dest)) continue;
+		if (!b.hasTile(dest)) continue;
 
-		if (b.has_piece(dest))
+		if (b.hasPiece(dest))
 		{
-			if (are_friendly(b.get_piece(dest)->team(), team())) continue;
+			if (are_friendly(b.getPiece(dest)->team(), team())) continue;
 			moves.push_back(Move(id(), pos(), dest, CAPTURE));
 		}
 		moves.push_back(Move(id(), pos(), dest));
@@ -139,11 +139,11 @@ std::vector<Move> Piece::queen_get_available_squares(const BoardState& b) const
 		auto dest = pos() + dir;
 		for (int i = 0; i < 16; ++i)
 		{
-			if (!b.has_tile(dest)) break;
+			if (!b.hasTile(dest)) break;
 
-			if (b.has_piece(dest))
+			if (b.hasPiece(dest))
 			{
-				if (are_friendly(b.get_piece(dest)->team(), team())) break;
+				if (are_friendly(b.getPiece(dest)->team(), team())) break;
 				moves.push_back(Move(id(), pos(), dest, CAPTURE));
 			}
 			moves.push_back(Move(id(), pos(), dest));
@@ -165,11 +165,11 @@ std::vector<Move> Piece::rook_get_available_squares(const BoardState& b) const
 		auto dest = pos() + dir;
 		for (int i = 0; i < 16; ++i)
 		{
-			if (!b.has_tile(dest)) break;
+			if (!b.hasTile(dest)) break;
 
-			if (b.has_piece(dest))
+			if (b.hasPiece(dest))
 			{
-				if (are_friendly(b.get_piece(dest)->team(), team())) break;
+				if (are_friendly(b.getPiece(dest)->team(), team())) break;
 				moves.push_back(Move(id(), pos(), dest, CAPTURE));
 			}
 			moves.push_back(Move(id(), pos(), dest));
@@ -191,11 +191,11 @@ std::vector<Move> Piece::bishop_get_available_squares(const BoardState& b) const
 		auto dest = pos() + dir;
 		for (int i = 0; i < 16; ++i)
 		{
-			if (!b.has_tile(dest)) break;
+			if (!b.hasTile(dest)) break;
 
-			if (b.has_piece(dest))
+			if (b.hasPiece(dest))
 			{
-				if (are_friendly(b.get_piece(dest)->team(), team())) break;
+				if (are_friendly(b.getPiece(dest)->team(), team())) break;
 				moves.push_back(Move(id(), pos(), dest, CAPTURE));
 			}
 			moves.push_back(Move(id(), pos(), dest));
@@ -225,11 +225,11 @@ std::vector<Move> Piece::knight_get_available_squares(const BoardState& b) const
 	for (glm::ivec2 dir : KNIGHT_DIRECTIONS)
 	{
 		auto dest = pos() + dir;
-		if (!b.has_tile(dest)) continue;
+		if (!b.hasTile(dest)) continue;
 
-		if (b.has_piece(dest))
+		if (b.hasPiece(dest))
 		{
-			if (are_friendly(b.get_piece(dest)->team(), team())) continue;
+			if (are_friendly(b.getPiece(dest)->team(), team())) continue;
 			moves.push_back(Move(id(), pos(), dest, CAPTURE));
 		}
 		moves.push_back(Move(id(), pos(), dest));
@@ -248,11 +248,11 @@ std::vector<Move> Piece::pawn_get_available_squares(const BoardState& b) const
 
 	std::vector<Move> moves;
 	// Tile in front
-	if (b.has_tile(pos() + forward) && !b.has_piece(pos() + forward))
+	if (b.hasTile(pos() + forward) && !b.hasPiece(pos() + forward))
 	{
 		auto dest = pos() + forward;
 
-		if (b.has_tile(dest + forward))
+		if (b.hasTile(dest + forward))
 		{
 			// If pawn has reached end
 			for (MoveFlags promotion_flags : { PROMOTE_TO_QUEEN, PROMOTE_TO_ROOK, PROMOTE_TO_BISHOP, PROMOTE_TO_KNIGHT })
@@ -269,10 +269,10 @@ std::vector<Move> Piece::pawn_get_available_squares(const BoardState& b) const
 	// Captures to the diagonal forward directions
 	for (glm::ivec2 capture_dir : capture_directions) {
 		auto dest = pos() + capture_dir;
-		if (!b.has_tile(dest) || !b.has_piece(dest) || !are_hostile(team(), b.get_piece(dest)->team()))
+		if (!b.hasTile(dest) || !b.hasPiece(dest) || !are_hostile(team(), b.getPiece(dest)->team()))
 			continue;
 
-		if (b.has_tile(dest + forward))
+		if (b.hasTile(dest + forward))
 		{
 			// If pawn has reached end
 			for (MoveFlags promotion_flags : { PROMOTE_TO_QUEEN, PROMOTE_TO_ROOK, PROMOTE_TO_BISHOP, PROMOTE_TO_KNIGHT })

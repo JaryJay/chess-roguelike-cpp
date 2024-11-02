@@ -11,15 +11,16 @@
 class BoardState
 {
 public:
-	[[nodiscard]] bool is_end_state() const;
-	[[nodiscard]] std::unique_ptr<BoardState> simulate_move(const Move& move) const;
-	[[nodiscard]] std::vector<Move> get_legal_moves() const;
-	[[nodiscard]] bool is_king_alive(Team team) const;
-	[[nodiscard]] bool is_king_in_check(Team team) const;
+	[[nodiscard]] bool isEndState() const;
+	[[nodiscard]] std::unique_ptr<BoardState> simulateMove(const Move& move) const;
+	[[nodiscard]] std::vector<Move> getLegalMoves() const;
+	[[nodiscard]] bool isKingAlive(Team team) const;
+	[[nodiscard]] bool isKingInCheck(Team team) const;
 	[[nodiscard]] std::unique_ptr<BoardState> duplicate() const;
-	[[nodiscard]] bool has_tile(const glm::ivec2& pos) const;
-	[[nodiscard]] bool has_piece(const glm::ivec2& pos) const;
-	[[nodiscard]] std::unique_ptr<Piece> get_piece(const glm::ivec2& pos) const;
+	[[nodiscard]] bool hasTile(const glm::ivec2& pos) const;
+	[[nodiscard]] bool hasPiece(const glm::ivec2& pos) const;
+	[[nodiscard]] std::unique_ptr<Piece> getPiece(const glm::ivec2& pos) const;
+	[[nodiscard]] std::vector<Piece> getPieces() const;
 
 	BoardState();
 	~BoardState();
