@@ -3,10 +3,21 @@
 #include <iostream>
 #include <ostream>
 
+#include "ArmyGenerator.h"
+
 using namespace glm;
+
+Game::Game(const Renderer& renderer, const Window& window)
+    : renderer(renderer),
+      window(window),
+      boardState(generateBoardStateWithoutPieces())
+{
+}
 
 void Game::start()
 {
+    generateArmy(1300, boardState, ENEMY);
+
     texture = std::make_shared<Texture2D>("assets/pieces_sprite_sheet.png");
 
     textureRegions["whiteTile"] = std::make_shared<Texture2DRegion>(*texture, vec2(72, 0), vec2(88, 16));
@@ -27,12 +38,11 @@ void Game::draw()
     const auto darkTile = textureRegions["darkTile"];
     const auto whitePawn = textureRegions["whitePawn"];
 
-    for (int y = 0; y < 8; ++y)
-        for (int x = 0; x < 8; ++x)
-            if ((x + y) % 2 == 0)
-                renderer.drawTextureRegion(*whiteTile, vec2(100, 100) + vec2(x, y) * 16.0f * 4.0f, 4.0f);
-            else
-                renderer.drawTextureRegion(*darkTile, vec2(100, 100) + vec2(x, y) * 16.0f * 4.0f, 4.0f);
+    for (const auto tile : boardState.tiles)
+    {
+        const auto textureRegion = (tile.x + tile.y) % 2 == 0 ? whiteTile : darkTile;
+        renderer.drawTextureRegion(*textureRegion, vec2(tile.x * 16.0f, tile.y * 16.0f), 4.0f);
+    }
 
 
     renderer.drawTextureRegion(*whitePawn, vec2(200.0f, 200.0f), 4.0f);
@@ -40,4 +50,5 @@ void Game::draw()
 
 void Game::end()
 {
+    textureRegions.clear();
 }

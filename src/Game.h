@@ -10,11 +10,7 @@ public:
     void draw();
     void end();
 
-    Game(const Renderer& renderer, const Window& window)
-        : renderer(renderer),
-          window(window)
-    {
-    }
+    Game(const Renderer& renderer, const Window& window);
 
     Renderer renderer;
     Window window;
