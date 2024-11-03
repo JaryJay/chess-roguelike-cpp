@@ -23,6 +23,7 @@ public:
 
 	[[nodiscard]] int id() const;
 	[[nodiscard]] glm::ivec2 pos() const;
+	void setPos(glm::ivec2 pos);
 	[[nodiscard]] PieceType type() const;
 	[[nodiscard]] Team team() const;
 

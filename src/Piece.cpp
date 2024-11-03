@@ -66,6 +66,11 @@ glm::ivec2 Piece::pos() const
 	return _pos;
 }
 
+void Piece::setPos(const glm::ivec2 pos)
+{
+	_pos = pos;
+}
+
 PieceType Piece::type() const
 {
 	return _type;
@@ -118,7 +123,7 @@ std::vector<Move> Piece::king_get_available_squares(const BoardState& b) const
 
 		if (b.hasPiece(dest))
 		{
-			if (are_friendly(b.getPiece(dest)->team(), team())) continue;
+			if (are_friendly(b.getPieceCopy(dest).team(), team())) continue;
 			moves.push_back(Move(id(), pos(), dest, CAPTURE));
 		}
 		moves.push_back(Move(id(), pos(), dest));
@@ -143,7 +148,7 @@ std::vector<Move> Piece::queen_get_available_squares(const BoardState& b) const
 
 			if (b.hasPiece(dest))
 			{
-				if (are_friendly(b.getPiece(dest)->team(), team())) break;
+				if (are_friendly(b.getPieceCopy(dest).team(), team())) break;
 				moves.push_back(Move(id(), pos(), dest, CAPTURE));
 			}
 			moves.push_back(Move(id(), pos(), dest));
@@ -169,7 +174,7 @@ std::vector<Move> Piece::rook_get_available_squares(const BoardState& b) const
 
 			if (b.hasPiece(dest))
 			{
-				if (are_friendly(b.getPiece(dest)->team(), team())) break;
+				if (are_friendly(b.getPieceCopy(dest).team(), team())) break;
 				moves.push_back(Move(id(), pos(), dest, CAPTURE));
 			}
 			moves.push_back(Move(id(), pos(), dest));
@@ -195,7 +200,7 @@ std::vector<Move> Piece::bishop_get_available_squares(const BoardState& b) const
 
 			if (b.hasPiece(dest))
 			{
-				if (are_friendly(b.getPiece(dest)->team(), team())) break;
+				if (are_friendly(b.getPieceCopy(dest).team(), team())) break;
 				moves.push_back(Move(id(), pos(), dest, CAPTURE));
 			}
 			moves.push_back(Move(id(), pos(), dest));
@@ -229,7 +234,7 @@ std::vector<Move> Piece::knight_get_available_squares(const BoardState& b) const
 
 		if (b.hasPiece(dest))
 		{
-			if (are_friendly(b.getPiece(dest)->team(), team())) continue;
+			if (are_friendly(b.getPieceCopy(dest).team(), team())) continue;
 			moves.push_back(Move(id(), pos(), dest, CAPTURE));
 		}
 		moves.push_back(Move(id(), pos(), dest));
@@ -269,7 +274,7 @@ std::vector<Move> Piece::pawn_get_available_squares(const BoardState& b) const
 	// Captures to the diagonal forward directions
 	for (glm::ivec2 capture_dir : capture_directions) {
 		auto dest = pos() + capture_dir;
-		if (!b.hasTile(dest) || !b.hasPiece(dest) || !are_hostile(team(), b.getPiece(dest)->team()))
+		if (!b.hasTile(dest) || !b.hasPiece(dest) || !are_hostile(team(), b.getPieceCopy(dest).team()))
 			continue;
 
 		if (b.hasTile(dest + forward))

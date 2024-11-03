@@ -27,7 +27,9 @@ add_executable(chess-roguelike-cpp
         src/Team.cpp
         src/Team.h
         src/Game.cpp
-        src/Game.h)
+        src/Game.h
+        src/ArmyGenerator.cpp
+        src/ArmyGenerator.h)
 
 # Copy the shaders to the build directory
 add_custom_command(
