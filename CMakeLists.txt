@@ -6,7 +6,7 @@ string(REPLACE "\\" "/" VCPKG_ROOT "$ENV{VCPKG_ROOT}")
 set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
 set(CMAKE_CXX_STANDARD 20)
 
-project(chess_roguelike_cpp)
+project(chess-roguelike-cpp)
 
 find_package(glad CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
@@ -16,7 +16,7 @@ find_package(OpenGL REQUIRED COMPONENTS OpenGL)
 # Add the engine submodule
 add_subdirectory(external/opengl-cpp-engine)
 
-add_executable(chess_roguelike_cpp
+add_executable(chess-roguelike-cpp
         src/BoardState.cpp
         src/BoardState.h
         src/main.cpp
@@ -31,21 +31,22 @@ add_executable(chess_roguelike_cpp
 
 # Copy the shaders to the build directory
 add_custom_command(
-        TARGET chess_roguelike_cpp POST_BUILD
+        TARGET chess-roguelike-cpp POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/external/opengl-cpp-engine/shaders
         ${CMAKE_CURRENT_BINARY_DIR}/shaders)
 
 # Copy the assets to the build directory
 add_custom_command(
-        TARGET chess_roguelike_cpp POST_BUILD
+        TARGET chess-roguelike-cpp POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/src/assets
         ${CMAKE_CURRENT_BINARY_DIR}/assets)
 
 
+target_include_directories(chess-roguelike-cpp PUBLIC ${CMAKE_SOURCE_DIR}/external/FastNoiseLite)
 # Link the engine library to the main app executable
-target_link_libraries(chess_roguelike_cpp
+target_link_libraries(chess-roguelike-cpp
         PRIVATE opengl-cpp-engine
         PRIVATE glad::glad
         PRIVATE glfw
