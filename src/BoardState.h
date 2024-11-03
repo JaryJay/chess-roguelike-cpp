@@ -1,12 +1,19 @@
 #pragma once
+
 #include "Move.h"
 #include <unordered_map>
 #include <memory>
-#include <glm/vec2.hpp>
+#define GLM_FORCE_MESSAGES
 #define GLM_ENABLE_EXPERIMENTAL
+#include <glm/vec2.hpp>
+#include <set>
+
 #include "glm/gtx/hash.hpp"
 #include "Team.h"
 #include "Piece.h"
+
+
+BoardState generateBoardStateWithoutPieces();
 
 class BoardState
 {
@@ -19,16 +26,13 @@ public:
 	[[nodiscard]] std::unique_ptr<BoardState> duplicate() const;
 	[[nodiscard]] bool hasTile(const glm::ivec2& pos) const;
 	[[nodiscard]] bool hasPiece(const glm::ivec2& pos) const;
-	[[nodiscard]] std::unique_ptr<Piece> getPiece(const glm::ivec2& pos) const;
-	[[nodiscard]] std::vector<Piece> getPieces() const;
+	[[nodiscard]] Piece getPieceCopy(const glm::ivec2& pos) const;
 
-	BoardState();
+	BoardState(const std::set<glm::ivec2>& tiles, const std::unordered_map<glm::ivec2, Piece>& pieces, Team team);
 	~BoardState();
-private:
-	std::unordered_map<glm::ivec2, bool> tiles;
-	std::unordered_map<glm::ivec2, Piece> pieces;
-	Team current_turn;
 
-	explicit BoardState(Team team);
+	std::set<glm::ivec2> tiles;
+	std::unordered_map<glm::ivec2, Piece> pieces;
+	Team currentTurn;
 };
 
